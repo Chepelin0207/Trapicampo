@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trapicampo — Crea tu cuenta y disfruta de productos frescos del campo colombiano entregados a tu puerta.">
+  <title>Trapicampo — Crear Cuenta</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="logo.png">
+</head>
+
+<body class="auth-body">
+  <div class="bg-pattern"></div>
+
+  <div class="auth-page">
+    <!-- ═══ LEFT PANEL (Decorative) ═══ -->
+    <div class="auth-panel">
+      <div class="auth-panel__content">
+        <a href="index.html" class="auth-panel__brand">
+          <img src="logo.png" alt="Trapicampo" class="auth-panel__logo">
+          Trapicampo
+        </a>
+        <div class="auth-panel__decoration">
+          <span class="auth-panel__emoji auth-panel__emoji--1">🌾</span>
+          <span class="auth-panel__emoji auth-panel__emoji--2">🍌</span>
+          <span class="auth-panel__emoji auth-panel__emoji--3">🥛</span>
+          <span class="auth-panel__emoji auth-panel__emoji--4">🍅</span>
+          <span class="auth-panel__emoji auth-panel__emoji--5">🥚</span>
+        </div>
+        <h1 class="auth-panel__title">Únete a Trapicampo</h1>
+        <p class="auth-panel__subtitle">
+          Crea tu cuenta y descubre la frescura de los mejores productos del campo colombiano.
+        </p>
+        <div class="auth-panel__features">
+          <div class="auth-panel__feature">
+            <span>✨</span> Registro rápido y seguro
+          </div>
+          <div class="auth-panel__feature">
+            <span>🛒</span> Compra fácil desde casa
+          </div>
+          <div class="auth-panel__feature">
+            <span>🌱</span> Productos 100% frescos
+          </div>
+        </div>
+      </div>
+      <div class="auth-panel__wave"></div>
+    </div>
+
+    <!-- ═══ RIGHT PANEL (Form) ═══ -->
+    <div class="auth-form-container">
+      <div class="auth-form-wrapper">
+        <!-- Mobile Brand -->
+        <a href="index.html" class="auth-mobile-brand">
+          <img src="logo.png" alt="Trapicampo" class="auth-mobile-brand__logo">
+          Trapicampo
+        </a>
+
+        <div class="auth-form-header">
+          <h2 class="auth-form-header__title">Crear Cuenta</h2>
+          <p class="auth-form-header__subtitle">Completa el formulario para registrarte</p>
+        </div>
+
+        <!-- Success Message -->
+        <div class="auth-alert auth-alert--success" id="registerSuccess" style="display:none;">
+          <span class="auth-alert__icon">🎉</span>
+          <span>¡Registro exitoso! Redirigiendo al inicio de sesión...</span>
+        </div>
+
+        <!-- Error Message -->
+        <div class="auth-alert auth-alert--error" id="registerError" style="display:none;">
+          <span class="auth-alert__icon">❌</span>
+          <span id="registerErrorMsg"></span>
+        </div>
+
+        <form id="registerForm" class="auth-form" autocomplete="on" novalidate>
+          <!-- Full Name -->
+          <div class="auth-input-group" id="groupFullName">
+            <label class="auth-label" for="regFullName">Nombre completo</label>
+            <div class="auth-input-wrapper">
+              <span class="auth-input-icon">👤</span>
+              <input
+                type="text"
+                class="auth-input"
+                id="regFullName"
+                placeholder="Ej: María García López"
+                autocomplete="name"
+                required>
+            </div>
+            <span class="auth-field-error" id="errorFullName"></span>
+          </div>
+
+          <!-- Email -->
+          <div class="auth-input-group" id="groupEmail">
+            <label class="auth-label" for="regEmail">Correo electrónico</label>
+            <div class="auth-input-wrapper">
+              <span class="auth-input-icon">📧</span>
+              <input
+                type="email"
+                class="auth-input"
+                id="regEmail"
+                placeholder="tucorreo@ejemplo.com"
+                autocomplete="email"
+                required>
+            </div>
+            <span class="auth-field-error" id="errorEmail"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-input-group" id="groupPassword">
+            <label class="auth-label" for="regPassword">Contraseña</label>
+            <div class="auth-input-wrapper">
+              <span class="auth-input-icon">🔒</span>
+              <input
+                type="password"
+                class="auth-input"
+                id="regPassword"
+                placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password"
+                required>
+              <button type="button" class="auth-toggle-pw" id="togglePassword" aria-label="Mostrar contraseña">
+                👁️
+              </button>
+            </div>
+            <span class="auth-field-error" id="errorPassword"></span>
+            <!-- Password strength indicator -->
+            <div class="password-strength" id="passwordStrength" style="display:none;">
+              <div class="password-strength__bar">
+                <div class="password-strength__fill" id="strengthFill"></div>
+              </div>
+              <span class="password-strength__label" id="strengthLabel"></span>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="auth-input-group" id="groupConfirmPassword">
+            <label class="auth-label" for="regConfirmPassword">Confirmar contraseña</label>
+            <div class="auth-input-wrapper">
+              <span class="auth-input-icon">🔐</span>
+              <input
+                type="password"
+                class="auth-input"
+                id="regConfirmPassword"
+                placeholder="Repite tu contraseña"
+                autocomplete="new-password"
+                required>
+              <button type="button" class="auth-toggle-pw" id="toggleConfirmPassword" aria-label="Mostrar contraseña">
+                👁️
+              </button>
+            </div>
+            <span class="auth-field-error" id="errorConfirmPassword"></span>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="auth-submit" id="btnRegister">
+            <span class="auth-submit__text">Crear Cuenta</span>
+            <span class="auth-submit__loader" style="display:none;">
+              <span class="auth-spinner"></span>
+            </span>
+          </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+          <p>¿Ya tienes cuenta? <a href="login.html" class="auth-link">Inicia sesión</a></p>
+          <a href="index.html" class="auth-link auth-link--back">← Volver a la tienda</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="toast__icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Mensaje</span>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already logged in, redirect
+      if (isLoggedIn()) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const form = document.getElementById('registerForm');
+      const fullNameInput = document.getElementById('regFullName');
+      const emailInput = document.getElementById('regEmail');
+      const passwordInput = document.getElementById('regPassword');
+      const confirmPasswordInput = document.getElementById('regConfirmPassword');
+      const btnRegister = document.getElementById('btnRegister');
+      const successEl = document.getElementById('registerSuccess');
+      const errorEl = document.getElementById('registerError');
+      const errorMsgEl = document.getElementById('registerErrorMsg');
+
+      // Toggle password visibility
+      document.getElementById('togglePassword').addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        document.getElementById('togglePassword').textContent = isPassword ? '🙈' : '👁️';
+      });
+
+      document.getElementById('toggleConfirmPassword').addEventListener('click', () => {
+        const isPassword = confirmPasswordInput.type === 'password';
+        confirmPasswordInput.type = isPassword ? 'text' : 'password';
+        document.getElementById('toggleConfirmPassword').textContent = isPassword ? '🙈' : '👁️';
+      });
+
+      // Password strength indicator
+      passwordInput.addEventListener('input', () => {
+        const pw = passwordInput.value;
+        const strengthEl = document.getElementById('passwordStrength');
+        const fillEl = document.getElementById('strengthFill');
+        const labelEl = document.getElementById('strengthLabel');
+
+        if (pw.length === 0) {
+          strengthEl.style.display = 'none';
+          return;
+        }
+
+        strengthEl.style.display = 'flex';
+        const strength = getPasswordStrength(pw);
+        fillEl.style.width = strength.percent + '%';
+        fillEl.style.background = strength.color;
+        labelEl.textContent = strength.label;
+        labelEl.style.color = strength.color;
+
+        clearFieldError('Password');
+      });
+
+      // Clear errors on input
+      fullNameInput.addEventListener('input', () => clearFieldError('FullName'));
+      emailInput.addEventListener('input', () => clearFieldError('Email'));
+      confirmPasswordInput.addEventListener('input', () => clearFieldError('ConfirmPassword'));
+
+      function showFieldError(field, msg) {
+        const group = document.getElementById('group' + field);
+        const error = document.getElementById('error' + field);
+        if (group) group.classList.add('auth-input-group--error');
+        if (error) error.textContent = msg;
+      }
+
+      function clearFieldError(field) {
+        const group = document.getElementById('group' + field);
+        const error = document.getElementById('error' + field);
+        if (group) group.classList.remove('auth-input-group--error');
+        if (error) error.textContent = '';
+      }
+
+      function clearAllErrors() {
+        ['FullName', 'Email', 'Password', 'ConfirmPassword'].forEach(clearFieldError);
+        errorEl.style.display = 'none';
+      }
+
+      function setLoading(loading) {
+        btnRegister.disabled = loading;
+        btnRegister.querySelector('.auth-submit__text').style.display = loading ? 'none' : '';
+        btnRegister.querySelector('.auth-submit__loader').style.display = loading ? 'flex' : 'none';
+      }
+
+      // Form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAllErrors();
+
+        const fullName = fullNameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        let hasError = false;
+
+        // Client-side validation first
+        if (!fullName || fullName.length < 2) {
+          showFieldError('FullName', 'El nombre debe tener al menos 2 caracteres');
+          hasError = true;
+        }
+
+        if (!email) {
+          showFieldError('Email', 'El correo es obligatorio');
+          hasError = true;
+        } else if (!validateEmail(email)) {
+          showFieldError('Email', 'El formato del correo no es válido');
+          hasError = true;
+        }
+
+        if (!password) {
+          showFieldError('Password', 'La contraseña es obligatoria');
+          hasError = true;
+        } else {
+          const pwdValidation = validatePassword(password);
+          if (!pwdValidation.isValid) {
+            showFieldError('Password', pwdValidation.errors[0]);
+            hasError = true;
+          }
+        }
+
+        if (!confirmPassword) {
+          showFieldError('ConfirmPassword', 'Debes confirmar la contraseña');
+          hasError = true;
+        } else if (password !== confirmPassword) {
+          showFieldError('ConfirmPassword', 'Las contraseñas no coinciden');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        setLoading(true);
+
+        // Small delay for UX
+        await new Promise(r => setTimeout(r, 800));
+
+        const result = await registerUser(fullName, email, password, confirmPassword);
+
+        if (!result.success) {
+          setLoading(false);
+          // Show field-specific errors
+          if (result.errors) {
+            if (result.errors.fullName) showFieldError('FullName', result.errors.fullName);
+            if (result.errors.email) showFieldError('Email', result.errors.email);
+            if (result.errors.password) showFieldError('Password', result.errors.password);
+            if (result.errors.confirmPassword) showFieldError('ConfirmPassword', result.errors.confirmPassword);
+          }
+          return;
+        }
+
+        // Success!
+        setLoading(false);
+        form.style.display = 'none';
+        successEl.style.display = 'flex';
+
+        // Redirect to login after 2 seconds
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 2000);
+      });
+    });
+  </script>
+</body>
+
+</html>

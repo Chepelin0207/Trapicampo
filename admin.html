@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trapicampo — Panel de Administración. Control de inventario, ventas, entregas y usuarios.">
+  <title>Trapicampo — Panel Admin</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="logo.png">
+</head>
+<body>
+  <div class="bg-pattern"></div>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="admin-layout">
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sidebar" id="sidebar">
+      <a href="index.html" class="sidebar__brand">
+        <img src="logo.png" alt="Trapicampo" class="sidebar__brand-logo">
+        Trapicampo
+      </a>
+
+      <!-- Admin User Info -->
+      <div class="sidebar__user-info" id="sidebarUserInfo">
+        <div class="sidebar__user-avatar" id="sidebarUserAvatar">A</div>
+        <div class="sidebar__user-details">
+          <div class="sidebar__user-name" id="sidebarUserName">Administrador</div>
+          <div class="sidebar__user-role">⚡ Administrador</div>
+        </div>
+      </div>
+
+      <div class="sidebar__label">Principal</div>
+      <a href="#" class="sidebar__link active" data-section="dashboard" id="linkDashboard">
+        <span class="sidebar__link-icon">📊</span>
+        Dashboard
+      </a>
+      <a href="#" class="sidebar__link" data-section="inventory" id="linkInventory">
+        <span class="sidebar__link-icon">📦</span>
+        Inventario
+      </a>
+      <a href="#" class="sidebar__link" data-section="orders" id="linkOrders">
+        <span class="sidebar__link-icon">🧾</span>
+        Pedidos y Entregas
+      </a>
+      <a href="#" class="sidebar__link" data-section="users" id="linkUsers">
+        <span class="sidebar__link-icon">👥</span>
+        Usuarios
+      </a>
+
+      <div class="sidebar__label">Sistema</div>
+      <a href="index.html" class="sidebar__link">
+        <span class="sidebar__link-icon">🏪</span>
+        Ver Tienda
+      </a>
+
+      <div class="sidebar__footer">
+        <button class="sidebar__logout" onclick="logout()" id="btnLogout">
+          🚪 Cerrar sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main class="admin-main">
+      <!-- Mobile Header -->
+      <div class="admin-main__header">
+        <div>
+          <h1 class="admin-main__title" id="sectionTitle">Dashboard</h1>
+          <p class="admin-main__subtitle" id="sectionSubtitle">Resumen general de Trapicampo</p>
+        </div>
+        <button class="btn-secondary" id="btnMobileMenu" style="display:none;">☰ Menú</button>
+      </div>
+
+      <!-- ═══ SECTION: DASHBOARD ═══ -->
+      <section class="admin-section active" id="sectionDashboard">
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card stat-card--green">
+            <div class="stat-card__icon">📦</div>
+            <div class="stat-card__value" id="statProducts">0</div>
+            <div class="stat-card__label">Productos en Inventario</div>
+          </div>
+          <div class="stat-card stat-card--gold">
+            <div class="stat-card__icon">💰</div>
+            <div class="stat-card__value" id="statRevenue">$0</div>
+            <div class="stat-card__label">Ingresos Totales</div>
+          </div>
+          <div class="stat-card stat-card--blue">
+            <div class="stat-card__icon">🧾</div>
+            <div class="stat-card__value" id="statOrders">0</div>
+            <div class="stat-card__label">Pedidos Realizados</div>
+          </div>
+          <div class="stat-card stat-card--red">
+            <div class="stat-card__icon">⚠️</div>
+            <div class="stat-card__value" id="statLowStock">0</div>
+            <div class="stat-card__label">Productos con Stock Bajo</div>
+          </div>
+        </div>
+
+        <!-- Users Stat (extra row) -->
+        <div class="stats-grid" style="margin-top: -1.5rem;">
+          <div class="stat-card stat-card--blue">
+            <div class="stat-card__icon">👥</div>
+            <div class="stat-card__value" id="statUsers">0</div>
+            <div class="stat-card__label">Usuarios Registrados</div>
+          </div>
+          <div class="stat-card stat-card--green">
+            <div class="stat-card__icon">✅</div>
+            <div class="stat-card__value" id="statActiveUsers">0</div>
+            <div class="stat-card__label">Usuarios Activos</div>
+          </div>
+        </div>
+
+        <!-- Recent Orders Preview -->
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h3 class="admin-card__title">📋 Pedidos Recientes</h3>
+            <button class="btn-secondary" onclick="switchSection('orders')">Ver Todos →</button>
+          </div>
+          <div id="dashboardRecentOrders" style="padding: 16px 24px;">
+            <p style="color: var(--gray-400); text-align: center; padding: 24px 0;">No hay pedidos aún.</p>
+          </div>
+        </div>
+
+        <!-- Low Stock Alert -->
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h3 class="admin-card__title">⚠️ Alertas de Stock Bajo</h3>
+            <button class="btn-secondary" onclick="switchSection('inventory')">Ir al Inventario →</button>
+          </div>
+          <div id="dashboardLowStock" style="padding: 16px 24px;">
+            <p style="color: var(--gray-400); text-align: center; padding: 24px 0;">Todos los productos tienen stock suficiente.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION: INVENTORY ═══ -->
+      <section class="admin-section" id="sectionInventory">
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h3 class="admin-card__title">📦 Control de Inventario</h3>
+            <button class="btn-primary" id="btnAddProduct">+ Agregar Producto</button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="data-table" id="inventoryTable">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryBody">
+                <!-- Rows injected by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION: ORDERS ═══ -->
+      <section class="admin-section" id="sectionOrders">
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h3 class="admin-card__title">🧾 Pedidos y Entregas a Domicilio</h3>
+            <span class="btn-secondary" id="ordersCount">0 pedidos</span>
+          </div>
+          <div id="ordersList" style="padding: 16px;">
+            <p style="color: var(--gray-400); text-align: center; padding: 40px 0;">No hay pedidos registrados aún. Los pedidos aparecerán aquí cuando los clientes compren en la tienda.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SECTION: USERS ═══ -->
+      <section class="admin-section" id="sectionUsers">
+        <div class="admin-card">
+          <div class="admin-card__header">
+            <h3 class="admin-card__title">👥 Gestión de Usuarios</h3>
+            <button class="btn-primary" id="btnAddUser">+ Crear Usuario</button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="data-table" id="usersTable">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Correo</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Fecha Registro</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody">
+                <!-- Rows injected by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ═══ ADD/EDIT PRODUCT MODAL ═══ -->
+  <div class="admin-modal-overlay" id="productModal">
+    <div class="admin-modal">
+      <div class="admin-modal__header">
+        <h2 class="admin-modal__title" id="productModalTitle">Agregar Producto</h2>
+        <button class="modal__close" id="btnCloseProductModal" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="admin-modal__body">
+        <form id="productForm">
+          <input type="hidden" id="productEditId">
+          <div class="form-group">
+            <label class="form-label" for="productName">Nombre del producto *</label>
+            <input type="text" class="form-input" id="productName" placeholder="Ej: Manzanas Rojas" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="productCategory">Categoría *</label>
+              <select class="form-input form-select" id="productCategory" required>
+                <option value="">Seleccionar...</option>
+                <option value="frutas">🍎 Frutas</option>
+                <option value="verduras">🥬 Verduras</option>
+                <option value="lacteos">🥛 Lácteos</option>
+                <option value="abarrotes">🛒 Abarrotes</option>
+                <option value="bebidas">🧃 Bebidas</option>
+                <option value="carnes">🥩 Carnes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="productEmoji">Emoji / Ícono *</label>
+              <input type="text" class="form-input" id="productEmoji" placeholder="Ej: 🍎" required maxlength="4">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="productPrice">Precio (COP) *</label>
+              <input type="number" class="form-input" id="productPrice" placeholder="3500" min="0" step="100" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="productStock">Stock (unidades) *</label>
+              <input type="number" class="form-input" id="productStock" placeholder="50" min="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="productUnit">Unidad de medida *</label>
+            <input type="text" class="form-input" id="productUnit" placeholder="Ej: 1 kg, 1 L, 500 g, Unidad" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Imágenes del Producto</label>
+            <div class="image-upload-area" style="border: 2px dashed var(--gray-200); padding: 16px; border-radius: 12px; text-align: center; background: var(--gray-50); margin-bottom: 16px;">
+              <input type="file" id="productImageInput" multiple accept="image/jpeg, image/png, image/webp" style="display: none;">
+              <button type="button" class="btn-secondary" onclick="document.getElementById('productImageInput').click()" style="width: 100%; margin-bottom: 12px; justify-content: center;">
+                📸 Subir Imágenes (Máx 2MB)
+              </button>
+              <div class="image-preview-grid" id="productImagePreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 10px;">
+                <!-- Images will be rendered here -->
+              </div>
+            </div>
+            <small style="color: var(--gray-400); font-size: 0.8rem; display: block; margin-top: -10px; margin-bottom: 16px;">La primera imagen será la principal. Formatos válidos: JPG, PNG, WEBP.</small>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding: 14px 24px; font-size: 0.95rem; border-radius: 12px;">
+            💾 Guardar Producto
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ADD/EDIT USER MODAL ═══ -->
+  <div class="admin-modal-overlay" id="userModal">
+    <div class="admin-modal">
+      <div class="admin-modal__header">
+        <h2 class="admin-modal__title" id="userModalTitle">Crear Usuario</h2>
+        <button class="modal__close" id="btnCloseUserModal" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="admin-modal__body">
+        <form id="userForm" novalidate>
+          <input type="hidden" id="userEditId">
+          <div class="form-group">
+            <label class="form-label" for="userFullName">Nombre completo *</label>
+            <input type="text" class="form-input" id="userFullName" placeholder="Ej: María García" required>
+            <span class="auth-field-error" id="userErrorFullName"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="userEmail">Correo electrónico *</label>
+            <input type="email" class="form-input" id="userEmail" placeholder="correo@ejemplo.com" required>
+            <span class="auth-field-error" id="userErrorEmail"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="userPassword">Contraseña *</label>
+            <input type="password" class="form-input" id="userPassword" placeholder="Mínimo 8 caracteres" required>
+            <span class="auth-field-error" id="userErrorPassword"></span>
+            <small style="color: var(--gray-400); font-size: 0.78rem;" id="userPasswordHint">Mínimo 8 caracteres. Dejar en blanco al editar para mantener la actual.</small>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="userRole">Rol *</label>
+              <select class="form-input form-select" id="userRole" required>
+                <option value="user">👤 Usuario</option>
+                <option value="admin">⚡ Administrador</option>
+              </select>
+              <span class="auth-field-error" id="userErrorRole"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="userStatus">Estado *</label>
+              <select class="form-input form-select" id="userStatus" required>
+                <option value="active">✅ Activo</option>
+                <option value="inactive">🚫 Inactivo</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding: 14px 24px; font-size: 0.95rem; border-radius: 12px;">
+            💾 Guardar Usuario
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST ═══ -->
+  <div class="toast" id="adminToast">
+    <span class="toast__icon" id="adminToastIcon">✅</span>
+    <span id="adminToastMsg">Acción completada</span>
+  </div>
+
+  <!-- Mobile Menu Button -->
+  <button class="admin-mobile-toggle" id="btnToggleSidebar" aria-label="Abrir menú">☰</button>
+
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // ── Admin-specific initialization ──
+    document.addEventListener('DOMContentLoaded', () => {
+      // Protect this route — require admin role
+      if (!requireAdmin()) return;
+
+      // Display admin info in sidebar
+      const session = getCurrentSession();
+      if (session) {
+        const avatarEl = document.getElementById('sidebarUserAvatar');
+        const nameEl = document.getElementById('sidebarUserName');
+        if (avatarEl) avatarEl.textContent = session.fullName.charAt(0).toUpperCase();
+        if (nameEl) nameEl.textContent = session.fullName;
+      }
+
+      initAdmin();
+    });
+  </script>
+</body>
+</html>

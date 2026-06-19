@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Trapicampo — Tu supermercado de campo. Productos frescos del campo a tu puerta con entrega a domicilio.">
+  <title>Trapicampo — Del Campo a Tu Mesa</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="logo.png">
+</head>
+
+<body>
+  <div class="bg-pattern"></div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <img src="logo.png" alt="Trapicampo Logo" class="navbar__brand-logo">
+        Trapicampo
+      </a>
+
+      <div class="navbar__search">
+        <span class="navbar__search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Buscar productos frescos..." aria-label="Buscar productos">
+      </div>
+
+      <div class="navbar__actions">
+        <button class="navbar__btn navbar__btn--cart" id="btnOpenCart" aria-label="Abrir carrito">
+          🛒 <span>Carrito</span>
+          <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+        </button>
+        <button class="navbar__toggle" id="btnMobileSearch" aria-label="Buscar">🔍</button>
+      </div>
+    </div>
+
+    <!-- Mobile Search -->
+    <div class="mobile-search" id="mobileSearch">
+      <input type="text" id="mobileSearchInput" placeholder="Buscar productos..." aria-label="Buscar productos">
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <section class="hero" id="hero">
+    <div class="container hero__content">
+      <div class="hero__badge">🌱 Productos Frescos del Campo</div>
+      <h1 class="hero__title">
+        Del <span>Campo</span> directo a tu mesa
+      </h1>
+      <p class="hero__subtitle">
+        Descubre la frescura de nuestros productos orgánicos.
+        Compra desde la comodidad de tu hogar y recíbelos en tu puerta.
+      </p>
+      <a href="#catalogo" class="hero__cta">
+        🛍️ Explorar Catálogo
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ CATEGORIES ═══ -->
+  <section class="categories">
+    <div class="container">
+      <div class="categories__list" id="categoriesList">
+        <button class="category-chip active" data-category="todos">
+          <span class="category-chip__emoji">🏪</span> Todos
+        </button>
+        <button class="category-chip" data-category="frutas">
+          <span class="category-chip__emoji">🍎</span> Frutas
+        </button>
+        <button class="category-chip" data-category="verduras">
+          <span class="category-chip__emoji">🥬</span> Verduras
+        </button>
+        <button class="category-chip" data-category="lacteos">
+          <span class="category-chip__emoji">🥛</span> Lácteos
+        </button>
+        <button class="category-chip" data-category="abarrotes">
+          <span class="category-chip__emoji">🛒</span> Abarrotes
+        </button>
+        <button class="category-chip" data-category="bebidas">
+          <span class="category-chip__emoji">🧃</span> Bebidas
+        </button>
+        <button class="category-chip" data-category="carnes">
+          <span class="category-chip__emoji">🥩</span> Carnes
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PRODUCTS ═══ -->
+  <section class="products-section" id="catalogo">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-header__title">Nuestros Productos</h2>
+        <span class="section-header__count" id="productCount">Cargando...</span>
+      </div>
+      <div class="products-grid" id="productsGrid">
+        <!-- Products injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CART DRAWER ═══ -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras">
+    <div class="cart-drawer__header">
+      <h2 class="cart-drawer__title">🛒 Tu Carrito</h2>
+      <button class="cart-drawer__close" id="btnCloseCart" aria-label="Cerrar carrito">✕</button>
+    </div>
+    <div class="cart-drawer__items" id="cartItems">
+      <!-- Cart items injected by JS -->
+    </div>
+    <div class="cart-drawer__footer" id="cartFooter" style="display:none;">
+      <div class="cart-totals">
+        <div class="cart-totals__row">
+          <span>Subtotal</span>
+          <span id="cartSubtotal">$0</span>
+        </div>
+        <div class="cart-totals__row">
+          <span>Envío a domicilio</span>
+          <span id="cartShipping">$2,500</span>
+        </div>
+        <div class="cart-totals__row cart-totals__row--total">
+          <span>Total</span>
+          <span id="cartTotal">$0</span>
+        </div>
+      </div>
+      <button class="btn-checkout" id="btnCheckout">
+        Finalizar Compra →
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ CHECKOUT MODAL ═══ -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="checkoutModalTitle">📦 Datos de Entrega</h2>
+        <button class="modal__close" id="btnCloseCheckout" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal__body" id="checkoutModalBody">
+        <!-- Order Summary -->
+        <div class="order-summary" id="checkoutSummary">
+          <div class="order-summary__title">Resumen del Pedido</div>
+          <div id="checkoutSummaryItems"></div>
+          <div class="order-summary__total">
+            <span>Total a pagar</span>
+            <span id="checkoutTotal">$0</span>
+          </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <form id="checkoutForm" autocomplete="on">
+          <div class="form-group">
+            <label class="form-label" for="customerName">Nombre completo *</label>
+            <input type="text" class="form-input" id="customerName" placeholder="Ej: María García" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customerPhone">Teléfono *</label>
+            <input type="tel" class="form-input" id="customerPhone" placeholder="Ej: 3001234567" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="customerAddress">Dirección de entrega *</label>
+            <textarea class="form-input" id="customerAddress" placeholder="Calle, número, barrio, ciudad"
+              required></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="deliveryDate">Fecha de entrega *</label>
+              <input type="date" class="form-input" id="deliveryDate" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="deliveryTime">Horario *</label>
+              <select class="form-input form-select" id="deliveryTime" required>
+                <option value="">Seleccionar...</option>
+                <option value="08:00 - 10:00">🌅 08:00 - 10:00</option>
+                <option value="10:00 - 12:00">☀️ 10:00 - 12:00</option>
+                <option value="12:00 - 14:00">🌤️ 12:00 - 14:00</option>
+                <option value="14:00 - 16:00">⛅ 14:00 - 16:00</option>
+                <option value="16:00 - 18:00">🌇 16:00 - 18:00</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Método de pago *</label>
+            <div class="payment-options" id="paymentOptions">
+              <label class="payment-card selected" data-method="efectivo">
+                <input type="radio" name="paymentMethod" value="efectivo" checked>
+                <div class="payment-card__icon">💵</div>
+                <div class="payment-card__label">Efectivo</div>
+              </label>
+              <label class="payment-card" data-method="transferencia">
+                <input type="radio" name="paymentMethod" value="transferencia">
+                <div class="payment-card__icon">🏦</div>
+                <div class="payment-card__label">Transferencia</div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="orderNotes">Notas adicionales</label>
+            <textarea class="form-input" id="orderNotes" placeholder="Instrucciones especiales para la entrega..."
+              rows="2"></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit-order">
+            ✅ Confirmar Pedido
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PRODUCT DETAIL MODAL ═══ -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal product-detail-modal">
+      <button class="modal__close" id="btnCloseProductDetail" aria-label="Cerrar">✕</button>
+      <div class="product-detail-layout">
+        <div class="product-detail-gallery">
+          <div class="product-detail-main" id="detailMainImageContainer">
+            <!-- Main Image/Emoji -->
+          </div>
+          <div class="product-detail-thumbnails" id="detailThumbnails">
+            <!-- Thumbnails -->
+          </div>
+        </div>
+        <div class="product-detail-info">
+          <span class="product-card__category" id="detailCategory"></span>
+          <h2 class="product-detail-title" id="detailName"></h2>
+          <div class="product-detail-badges" id="detailBadges"></div>
+          <div class="product-detail-price" id="detailPrice"></div>
+          <div class="product-detail-unit" id="detailUnit"></div>
+          
+          <button class="btn-primary product-detail-add" id="btnDetailAddToCart">
+            🛒 Agregar al Carrito
+          </button>
+          
+          <p class="product-detail-desc">
+            Producto fresco y seleccionado con los más altos estándares de calidad, directo desde el campo para ti y tu familia. Disfruta de la mejor frescura en cada bocado.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST ═══ -->
+  <div class="toast" id="toast">
+    <span class="toast__icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Producto agregado al carrito</span>
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand"><img src="logo.png" alt="Trapicampo" class="footer__brand-logo"> Trapicampo</div>
+          <p class="footer__desc">
+            Tu supermercado de campo. Llevamos la frescura del campo directo
+            a la puerta de tu hogar con los mejores productos de la región.
+          </p>
+        </div>
+        <div>
+          <div class="footer__heading">Categorías</div>
+          <a href="#" class="footer__link">Frutas y Verduras</a>
+          <a href="#" class="footer__link">Lácteos</a>
+          <a href="#" class="footer__link">Abarrotes</a>
+          <a href="#" class="footer__link">Bebidas</a>
+          <a href="#" class="footer__link">Carnes</a>
+        </div>
+
+        <div>
+          <div class="footer__heading">Contacto</div>
+          <a href="#" class="footer__link">📞 +57 313 237 7550</a>
+          <a href="#" class="footer__link">📧 ca375949@gmail.com</a>
+          <a href="#" class="footer__link">📍 Calle #4 Campo Verde</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © 2026 Trapicampo. Todos los derechos reservados. Hecho con 💚 por el campo colombiano.
+      </div>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

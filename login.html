@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Trapicampo — Inicia sesión en tu cuenta para acceder a tu supermercado de campo favorito.">
+  <title>Trapicampo — Iniciar Sesión</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="logo.png">
+</head>
+
+<body class="auth-body">
+  <div class="bg-pattern"></div>
+
+  <div class="auth-page">
+    <!-- ═══ LEFT PANEL (Decorative) ═══ -->
+    <div class="auth-panel">
+      <div class="auth-panel__content">
+        <a href="index.html" class="auth-panel__brand">
+          <img src="logo.png" alt="Trapicampo" class="auth-panel__logo">
+          Trapicampo
+        </a>
+        <div class="auth-panel__decoration">
+          <span class="auth-panel__emoji auth-panel__emoji--1">🌱</span>
+          <span class="auth-panel__emoji auth-panel__emoji--2">🍎</span>
+          <span class="auth-panel__emoji auth-panel__emoji--3">🥬</span>
+          <span class="auth-panel__emoji auth-panel__emoji--4">🧀</span>
+          <span class="auth-panel__emoji auth-panel__emoji--5">🥑</span>
+        </div>
+        <h1 class="auth-panel__title">Bienvenido de nuevo</h1>
+        <p class="auth-panel__subtitle">
+          Ingresa a tu cuenta para explorar los productos más frescos del campo colombiano.
+        </p>
+        <div class="auth-panel__features">
+          <div class="auth-panel__feature">
+            <span>🚚</span> Entrega a domicilio
+          </div>
+          <div class="auth-panel__feature">
+            <span>🌿</span> Productos orgánicos
+          </div>
+          <div class="auth-panel__feature">
+            <span>💚</span> Del campo a tu mesa
+          </div>
+        </div>
+      </div>
+      <div class="auth-panel__wave"></div>
+    </div>
+
+    <!-- ═══ RIGHT PANEL (Form) ═══ -->
+    <div class="auth-form-container">
+      <div class="auth-form-wrapper">
+        <!-- Mobile Brand -->
+        <a href="index.html" class="auth-mobile-brand">
+          <img src="logo.png" alt="Trapicampo" class="auth-mobile-brand__logo">
+          Trapicampo
+        </a>
+
+        <div class="auth-form-header">
+          <h2 class="auth-form-header__title">Iniciar Sesión</h2>
+          <p class="auth-form-header__subtitle">Ingresa tus credenciales para acceder</p>
+        </div>
+
+        <!-- Login Error Message (global) -->
+        <div class="auth-alert auth-alert--error" id="loginError" style="display:none;">
+          <span class="auth-alert__icon">❌</span>
+          <span id="loginErrorMsg"></span>
+        </div>
+
+        <form id="loginForm" class="auth-form" autocomplete="on" novalidate>
+          <!-- Email -->
+          <div class="auth-input-group" id="groupEmail">
+            <label class="auth-label" for="loginEmail">Correo electrónico</label>
+            <div class="auth-input-wrapper">
+              <span class="auth-input-icon">📧</span>
+              <input
+                type="email"
+                class="auth-input"
+                id="loginEmail"
+                placeholder="tucorreo@ejemplo.com"
+                autocomplete="email"
+                required>
+            </div>
+            <span class="auth-field-error" id="errorEmail"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-input-group" id="groupPassword">
+            <label class="auth-label" for="loginPassword">Contraseña</label>
+            <div class="auth-input-wrapper">
+              <span class="auth-input-icon">🔒</span>
+              <input
+                type="password"
+                class="auth-input"
+                id="loginPassword"
+                placeholder="Tu contraseña"
+                autocomplete="current-password"
+                required>
+              <button type="button" class="auth-toggle-pw" id="togglePassword" aria-label="Mostrar contraseña">
+                👁️
+              </button>
+            </div>
+            <span class="auth-field-error" id="errorPassword"></span>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="auth-submit" id="btnLogin">
+            <span class="auth-submit__text">Iniciar Sesión</span>
+            <span class="auth-submit__loader" style="display:none;">
+              <span class="auth-spinner"></span>
+            </span>
+          </button>
+        </form>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+          <p>¿No tienes cuenta? <a href="register.html" class="auth-link">Regístrate aquí</a></p>
+          <a href="index.html" class="auth-link auth-link--back">← Volver a la tienda</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="toast__icon" id="toastIcon">✅</span>
+    <span id="toastMsg">Mensaje</span>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already logged in, redirect
+      if (isLoggedIn()) {
+        const session = getCurrentSession();
+        if (session.role === ROLES.ADMIN) {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'index.html';
+        }
+        return;
+      }
+
+      const form = document.getElementById('loginForm');
+      const emailInput = document.getElementById('loginEmail');
+      const passwordInput = document.getElementById('loginPassword');
+      const errorEl = document.getElementById('loginError');
+      const errorMsgEl = document.getElementById('loginErrorMsg');
+      const btnLogin = document.getElementById('btnLogin');
+      const togglePw = document.getElementById('togglePassword');
+
+      // Toggle password visibility
+      togglePw.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        togglePw.textContent = isPassword ? '🙈' : '👁️';
+      });
+
+      // Clear errors on input
+      emailInput.addEventListener('input', () => {
+        clearFieldError('Email');
+        hideGlobalError();
+      });
+
+      passwordInput.addEventListener('input', () => {
+        clearFieldError('Password');
+        hideGlobalError();
+      });
+
+      function showFieldError(field, msg) {
+        const group = document.getElementById('group' + field);
+        const error = document.getElementById('error' + field);
+        if (group) group.classList.add('auth-input-group--error');
+        if (error) error.textContent = msg;
+      }
+
+      function clearFieldError(field) {
+        const group = document.getElementById('group' + field);
+        const error = document.getElementById('error' + field);
+        if (group) group.classList.remove('auth-input-group--error');
+        if (error) error.textContent = '';
+      }
+
+      function showGlobalError(msg) {
+        errorMsgEl.textContent = msg;
+        errorEl.style.display = 'flex';
+        errorEl.classList.add('auth-alert--shake');
+        setTimeout(() => errorEl.classList.remove('auth-alert--shake'), 500);
+      }
+
+      function hideGlobalError() {
+        errorEl.style.display = 'none';
+      }
+
+      function setLoading(loading) {
+        btnLogin.disabled = loading;
+        btnLogin.querySelector('.auth-submit__text').style.display = loading ? 'none' : '';
+        btnLogin.querySelector('.auth-submit__loader').style.display = loading ? 'flex' : 'none';
+      }
+
+      // Form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideGlobalError();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        let hasError = false;
+
+        if (!email) {
+          showFieldError('Email', 'El correo es obligatorio');
+          hasError = true;
+        } else if (!validateEmail(email)) {
+          showFieldError('Email', 'Formato de correo inválido');
+          hasError = true;
+        }
+
+        if (!password) {
+          showFieldError('Password', 'La contraseña es obligatoria');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        setLoading(true);
+
+        // Small delay for UX feel
+        await new Promise(r => setTimeout(r, 600));
+
+        const result = await loginUser(email, password);
+
+        if (!result.success) {
+          setLoading(false);
+          showGlobalError(result.error);
+          return;
+        }
+
+        // Success — redirect based on role
+        setLoading(false);
+
+        if (result.user.role === ROLES.ADMIN) {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'index.html';
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
