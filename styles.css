@@ -3024,3 +3024,33 @@ textarea.form-input {
 .product-card:hover .product-card__image-container img {
   transform: scale(1.1);
 }
+
+/* ══════════════════════════════════
+   MARCO LEGAL
+   ══════════════════════════════════ */
+.legal-section {
+  padding: var(--space-2xl) 0;
+  background-color: var(--surface-primary);
+  border-top: 1px solid var(--gray-200);
+}
+
+.legal-content {
+  max-width: 800px;
+  margin: 0 auto;
+  color: var(--gray-700);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.legal-content p {
+  margin-bottom: var(--space-md);
+  text-align: justify;
+}
+
+.legal-content h3 {
+  font-size: 1.1rem;
+  color: var(--gray-900);
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+}
